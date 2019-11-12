@@ -1,2 +1,2 @@
-# diamante
-Lista beneficios especiales para usuarios con nivel Diamante
+# Diamante
+Lista beneficios especiales para usuarios con nivel Diamante.
