@@ -8,11 +8,13 @@ class Service
 	 * @param Request
 	 * @param Response
 	 */
-	public function _main (Request $request, Response $response)
+	public function _main(Request $request, Response $response)
 	{
 		// do not let non-diamant users to pass
 		$level = Level::getLevel($request->person->experience);
-		if($level < Level::DIAMANTE) return $response->setTemplate('message.ejs');
+		if ($level < Level::DIAMANTE) {
+			return $response->setTemplate('message.ejs');
+		}
 
 		// for diamant users
 		$this->_grupo($request, $response);
@@ -24,11 +26,13 @@ class Service
 	 * @param Request
 	 * @param Response
 	 */
-	public function _grupo (Request $request, Response $response)
+	public function _grupo(Request $request, Response $response)
 	{
 		// do not let non-diamant users to pass
 		$level = Level::getLevel($request->person->experience);
-		if($level < Level::DIAMANTE) return $response->setTemplate('message.ejs');
+		if ($level < Level::DIAMANTE) {
+			return $response->setTemplate('message.ejs');
+		}
 
 		// send data to the view
 		$response->setTemplate("group.ejs");
@@ -40,11 +44,13 @@ class Service
 	 * @param Request
 	 * @param Response
 	 */
-	public function _rifa (Request $request, Response $response)
+	public function _rifa(Request $request, Response $response)
 	{
 		// do not let non-diamant users to pass
 		$level = Level::getLevel($request->person->experience);
-		if($level < Level::DIAMANTE) return $response->setTemplate('message.ejs');
+		if ($level < Level::DIAMANTE) {
+			return $response->setTemplate('message.ejs');
+		}
 
 		// send data to the view
 		$response->setTemplate("raffle.ejs");
