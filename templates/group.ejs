@@ -8,7 +8,15 @@
 </div>
 
 <div class="row">
-	<div class="col s12">
-		<p>¡Felicidades por ser un usuario nivel Diamante! Una vez que estemos todos, apareceremos acá. Por ahora sigue revisando este servicio en las próximas semanas, y si tienes alguna duda, preguntanos en el Soporte.</p>
-	</div>
+	<% people.forEach(function(item){ %>
+		<div class="col s4 m2">
+			<div class="card person center-align">
+				<a href="#!" class="green-text" onclick="apretaste.send({command:'CHAT', data:{'userId':'@<%= item.username %>'}})">
+					<div class="person-avatar circle" face="<%= item.avatar %>" color="<%= item.avatarColor %>" size="40"></div>
+					<div class="<%= item.gender %>">@<%= item.username %></div>
+					<small><i class="material-icons tiny">flash_on</i><%= item.experience %></small>
+				</a>
+			</div>
+		</div>
+	<% }) %>
 </div>
