@@ -100,13 +100,15 @@ class Service
 			$winner->end_date = strftime('%B', strtotime($winner->end_date));
 		}
 
-		// calculate the chances to win
+		// get the total experience for diamond users
 		$totalExp = Database::queryCache("
 			SELECT SUM(experience) AS total 
 			FROM person 
 			WHERE active = 1
 			AND blocked = 0
 			AND experience >= 1000")[0]->total;
+
+		// calculate the chances to win
 		$chances = number_format(($request->person->experience * 100) / $totalExp, 2);
 
 		// create data for the view

@@ -1,5 +1,5 @@
 --
--- Table structure
+-- Structure
 --
 
 CREATE TABLE `__diamante_raffle` (
@@ -9,7 +9,7 @@ CREATE TABLE `__diamante_raffle` (
   `start_date` timestamp NULL DEFAULT NULL,
   `end_date` timestamp NULL DEFAULT NULL,
   `winner_id` int(11) DEFAULT NULL,
-  `winner_experience` int(11) DEFAULT NULL
+  `inserted` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
