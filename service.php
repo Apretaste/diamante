@@ -18,7 +18,13 @@ class Service
 		// do not let non-diamant users to pass
 		$level = Level::getLevel($request->person->experience);
 		if ($level < Level::DIAMANTE) {
-			return $response->setTemplate('message.ejs');
+			$response->setCache();
+			return $response->setTemplate('message.ejs', [
+				"header" => "¡Espérate!",
+				"icon" => "pan_tool",
+				"text" => "Este servicio está lleno de sorpresas y premios especiales, pero es solo para usuarios que son nivel Diamante o superior. Sigue usando la app y pronto podrás acceder.",
+				"button" => []
+			]);
 		}
 
 		// for diamant users
@@ -33,17 +39,13 @@ class Service
 	 */
 	public function _grupo(Request $request, Response &$response)
 	{
-		// do not let non-diamant users to pass
-		$level = Level::getLevel($request->person->experience);
-		if ($level < Level::DIAMANTE) {
-			return $response->setTemplate('message.ejs');
-		}
-
 		// get the list of diamant users
 		$people = Database::query("
-			SELECT username, avatar, avatarColor, gender, experience
+			SELECT username, avatar, avatarColor, gender, experience, online
 			FROM person 
-			WHERE experience >= 1000
+			WHERE active = 1
+			AND blocked = 0
+			AND experience >= 1000
 			ORDER BY experience DESC
 			LIMIT 20");
 
@@ -60,13 +62,64 @@ class Service
 	 */
 	public function _rifa(Request $request, Response &$response)
 	{
-		// do not let non-diamant users to pass
-		$level = Level::getLevel($request->person->experience);
-		if ($level < Level::DIAMANTE) {
-			return $response->setTemplate('message.ejs');
+		// get the current raffle running
+		$raffle = Database::query("
+			SELECT description, image, end_date
+			FROM __diamante_raffle 
+			WHERE winner_id IS NULL
+			AND CURRENT_TIMESTAMP BETWEEN start_date AND end_date
+			LIMIT 1");
+
+		// error if no raffle is open
+		if (empty($raffle)) {
+			$response->setCache();
+			return $response->setTemplate('message.ejs', [
+				"header" => "No hay rifas abiertas",
+				"icon" => "sentiment_very_dissatisfied",
+				"text" => "Lo sentimos, no hay ninguna rifa abierta ahora mismo. Pruebe nuevamente mañana.",
+				"button" => ["href" => "DIAMANTE GRUPO", "caption" => "Ver grupo"]
+			]);
 		}
 
+		// format the raffle's end date
+		$raffle = $raffle[0];
+		$raffle->end_date = strftime('%e de %B', strtotime($raffle->end_date));
+
+		// get the list of winners
+		$winners = Database::query("
+			SELECT B.username, B.avatar, B.avatarColor, B.gender, B.online, A.end_date
+			FROM __diamante_raffle A
+			JOIN person B
+			ON A.winner_id = B.id
+			WHERE A.winner_id IS NOT NULL
+			ORDER BY A.end_date DESC
+			LIMIT 12");
+
+		// format the winners's end date
+		foreach ($winners as $winner) {
+			$winner->end_date = strftime('%B', strtotime($winner->end_date));
+		}
+
+		// calculate the chances to win
+		$totalExp = Database::queryCache("
+			SELECT SUM(experience) AS total 
+			FROM person 
+			WHERE active = 1
+			AND blocked = 0
+			AND experience >= 1000")[0]->total;
+		$chances = number_format(($request->person->experience * 100) / $totalExp, 2);
+
+		// create data for the view
+		$context = [
+			'raffle' => $raffle,
+			'chances' => $chances,
+			'winners' => $winners];
+
+		// create image for the view
+		$image = IMG_PATH . 'raffle/' . $raffle->image;
+
 		// send data to the view
-		$response->setTemplate("raffle.ejs");
+		$response->setCache();
+		$response->setTemplate("raffle.ejs", $context, [$image]);
 	}
 }

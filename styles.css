@@ -13,3 +13,18 @@
 .F {
 	color: #ec407a;
 }
+
+.online {
+	position: relative;
+	left: 28px;
+	bottom: -25px;
+	border-radius: 50%;
+	width: 15px;
+	height: 15px;
+	background-color: #1af10b;
+}
+
+.card .data {
+	line-height: 1;
+	margin-top: 10px;
+}

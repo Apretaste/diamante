@@ -11,10 +11,13 @@
 	<% people.forEach(function(item){ %>
 		<div class="col s4 m2">
 			<div class="card person center-align">
-				<a href="#!" class="green-text" onclick="apretaste.send({command:'CHAT', data:{'userId':'@<%= item.username %>'}})">
-					<div class="person-avatar circle" face="<%= item.avatar %>" color="<%= item.avatarColor %>" size="40"></div>
-					<div class="<%= item.gender %>">@<%= item.username %></div>
-					<small><i class="material-icons tiny">flash_on</i><%= item.experience %></small>
+				<a href="#!" class="grey-text text-darken-2" onclick="apretaste.send({command:'CHAT', data:{'userId':'@<%= item.username %>'}})">
+					<div class="person-avatar circle" face="<%= item.avatar %>" color="<%= item.avatarColor %>" size="40" online="<%= item.online %>"></div>
+
+					<div class="data <%= item.gender %>">
+						<div>@<%= item.username %></div>
+						<small><i class="material-icons tiny">flash_on</i><%= item.experience %></small>
+					</div>
 				</a>
 			</div>
 		</div>
