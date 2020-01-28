@@ -23,7 +23,7 @@ class Service
 				"header" => "¡Espérate!",
 				"icon" => "pan_tool",
 				"text" => "Este servicio está lleno de sorpresas y premios especiales, pero es solo para usuarios que son nivel Diamante o superior. Sigue usando la app y pronto podrás acceder.",
-				"button" => []
+				"button" => ""
 			]);
 		}
 
