@@ -118,7 +118,7 @@ class Service
 			'winners' => $winners];
 
 		// create image for the view
-		$image = IMG_PATH . 'raffle/' . $raffle->image;
+		$image = SHARED_PUBLIC_PATH . 'raffle/' . $raffle->image;
 
 		// send data to the view
 		$response->setCache();
