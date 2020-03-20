@@ -64,7 +64,7 @@ class Service
 	{
 		// get the current raffle running
 		$raffle = Database::query("
-			SELECT description, image, end_date
+			SELECT description, end_date
 			FROM __diamante_raffle 
 			WHERE winner_id IS NULL
 			AND CURRENT_TIMESTAMP BETWEEN start_date AND end_date
@@ -117,11 +117,8 @@ class Service
 			'chances' => $chances,
 			'winners' => $winners];
 
-		// create image for the view
-		$image = SHARED_PUBLIC_PATH . 'raffle/' . $raffle->image;
-
 		// send data to the view
 		$response->setCache();
-		$response->setTemplate("raffle.ejs", $context, [$image]);
+		$response->setTemplate("raffle.ejs", $context);
 	}
 }
