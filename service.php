@@ -13,7 +13,7 @@ class Service
 	 * @param Request
 	 * @param Response
 	 */
-	public function _main(Request $request, Response &$response)
+	public function _main(Request $request, Response $response)
 	{
 		// do not let non-diamant users to pass
 		$level = Level::getLevel($request->person->experience);
@@ -37,11 +37,11 @@ class Service
 	 * @param Request
 	 * @param Response
 	 */
-	public function _grupo(Request $request, Response &$response)
+	public function _grupo(Request $request, Response $response)
 	{
 		// get the list of diamant users
 		$people = Database::query("
-			SELECT username, avatar, avatarColor, gender, experience, online
+			SELECT username, avatar, avatarColor, gender, experience, online, week_rank AS rank
 			FROM person 
 			WHERE active = 1
 			AND blocked = 0
@@ -60,7 +60,7 @@ class Service
 	 * @param Request
 	 * @param Response
 	 */
-	public function _rifa(Request $request, Response &$response)
+	public function _rifa(Request $request, Response $response)
 	{
 		// get the current raffle running
 		$raffle = Database::query("
