@@ -55,6 +55,11 @@
 	font-size: x-small;
 }
 
+.chip.medium {
+	height: 20px;
+	line-height: 1.5;
+}
+
 .chip.tiny .icon {
 	line-height: 20px;
 }
