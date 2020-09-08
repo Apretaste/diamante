@@ -13,25 +13,24 @@
 
 		<p><%= raffle.description %></p>
 
-		<div class="chip"><%= chances %>% chances de ganar</div>
+		<p>Sus chances de ganar dependen de su experiencia y cantidad de participantes. Cierra el <%= moment(raffle.end_date).format('D [de] MMMM [del] YYYY') %> a las 11:59 PM</p>
 
-		<div><small>Sus chances de ganar dependen de su experiencia. Cierra el <%= raffle.end_date %> a las 11:59pm.</small></div>
+		<div class="chip"><%= chances %>% chances de ganar</div>
 	</div>
 </div>
 
 <% if(winners.length > 0) { %>
 	<div class="row">
 		<% winners.forEach(function(item){ %>
-			<div class="col s4 m2">
-				<div class="card person center-align">
-					<a href="#!" class="grey-text text-darken-2" onclick="apretaste.send({command:'CHAT', data:{'userId':'@<%= item.username %>'}})">
-						<div class="person-avatar circle" face="<%= item.avatar %>" color="<%= item.avatarColor %>" size="40" online="<%= item.online %>"></div>
-
-						<div class="data <%= item.gender %>">
-							<div>@<%= item.username %></div>
-							<small><%= item.end_date %></small>
-						</div>
-					</a>
+			<div class="col s4 m2" onclick="apretaste.send({command:'PERFIL', data:{'username':'<%= item.username %>'}})">
+				<div class="card user-card center-align">
+					<div class="content">
+						<div class="person-avatar circle" face="<%= item.avatar %>" color="<%= item.avatarColor %>" size="40" online="1"></div>
+						<span class="<%= item.gender %>">@<%= short(item.username) %></span>
+					</div>
+					<div class="action grey lighten-2">
+						<span class="chip medium clear"><%= moment(item.end_date).format('MMMM') %></span>
+					</div>
 				</div>
 			</div>
 		<% }) %>

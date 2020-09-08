@@ -13,7 +13,7 @@ class Service
 	 * @param Request
 	 * @param Response
 	 */
-	public function _main(Request $request, Response &$response)
+	public function _main(Request $request, Response $response)
 	{
 		// do not let non-diamant users to pass
 		$level = Level::getLevel($request->person->experience);
@@ -37,7 +37,7 @@ class Service
 	 * @param Request
 	 * @param Response
 	 */
-	public function _grupo(Request $request, Response &$response)
+	public function _grupo(Request $request, Response $response)
 	{
 		// get the list of diamant users
 		$people = Database::query("
@@ -60,10 +60,10 @@ class Service
 	 * @param Request
 	 * @param Response
 	 */
-	public function _rifa(Request $request, Response &$response)
+	public function _rifa(Request $request, Response $response)
 	{
 		// get the current raffle running
-		$raffle = Database::query("
+		$raffle = Database::queryFirst("
 			SELECT description, end_date
 			FROM __diamante_raffle 
 			WHERE winner_id IS NULL
@@ -81,10 +81,6 @@ class Service
 			]);
 		}
 
-		// format the raffle's end date
-		$raffle = $raffle[0];
-		$raffle->end_date = strftime('%e de %B', strtotime($raffle->end_date));
-
 		// get the list of winners
 		$winners = Database::query("
 			SELECT B.username, B.avatar, B.avatarColor, B.gender, B.online, A.end_date
@@ -94,11 +90,6 @@ class Service
 			WHERE A.winner_id IS NOT NULL
 			ORDER BY A.end_date DESC
 			LIMIT 12");
-
-		// format the winners's end date
-		foreach ($winners as $winner) {
-			$winner->end_date = strftime('%B', strtotime($winner->end_date));
-		}
 
 		// get the total experience for diamond users
 		$totalExp = Database::queryCache("
