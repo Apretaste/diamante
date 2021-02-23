@@ -135,7 +135,7 @@ class Service
 		}
 
 		// get the list of winners
-		$winners = Database::query("
+		$winners = Database::queryCache("
 			SELECT B.username, B.avatar, B.avatarColor, B.gender, B.online, A.end_date
 			FROM __diamante_raffle A
 			JOIN person B

@@ -160,6 +160,11 @@ ul.chat li {
 	font-size: x-small;
 }
 
+.chat .text {
+	overflow: hidden;
+	display: block;
+}
+
 /* MODAL */
 
 .modal.fullscreen {
