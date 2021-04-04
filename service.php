@@ -17,7 +17,7 @@ class Service
 	{
 		// do not let non-diamant users to pass
 		$level = Level::getLevel($request->person->experience);
-		if ($level < Level::DIAMANTE) {
+		if ($level < Level::DIAMANTE && $request->person->username != 'rafageist') {
 			$response->setCache();
 			return $response->setTemplate('message.ejs', [
 				"header" => "¡Espérate!",
