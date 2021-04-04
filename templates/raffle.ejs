@@ -2,6 +2,7 @@
 	<div class="col s12">
 		<ul class="tabs tabs-fixed-width">
 			<li class="tab"><a href="#" onclick="apretaste.send({command: 'DIAMANTE GRUPO'})">Pikete</a></li>
+			<li class="tab"><a href="#" onclick="apretaste.send({command: 'DIAMANTE CHAT'})">Muela</a></li>
 			<li class="tab"><a href="#" class="active">Rifa</a></li> 
 		</ul>
 	</div>
@@ -9,29 +10,50 @@
 
 <div class="row">
 	<div class="col s12">
+		<% if(isEnrolled) { %>
+			<div class="message success">
+				<i class="fas fa-check"></i>
+				<p>Ya estás participando en esta rifa</p>
+			</div>
+		<% } else { %>
+			<div class="message notice">
+				<i class="fas fa-exclamation-triangle"></i>
+				<p>
+					No estás participando en esta rifa. Regístrate tocando el botón a continuación.
+					<a id="enroll" class="waves-effect waves-light btn btn-small green" onclick="apretaste.send({command:'DIAMANTE ENTRAR', data:{id:<%= raffle.id %>}})">Registrarse</a>
+				</p>
+			</div>
+		<% } %>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col s12">
 		<img class="responsive-img z-depth-1 delete-if-no-image" src="{{APP_SERVICE_PATH}}/images/premio.png" alt="Artículo a rifar">
+
+		<span class="chip clear"><i class="far fa-calendar"></i> Cierra el <%= moment(raffle.end_date).format('D [de] MMM [del] YYYY') %> a las 11:59 PM</span>
 
 		<p><%= raffle.description %></p>
 
-		<div class="chip"><%= chances %>% chances de ganar</div>
+		<p>Sus chances de ganar dependen de su experiencia y de la cantidad de participantes.</p>
 
-		<div><small>Sus chances de ganar dependen de su experiencia. Cierra el <%= raffle.end_date %> a las 11:59pm.</small></div>
+		<span class="chip"><i class="fas fa-users"></i> <%= participants %> participando</span>
+		<span class="chip"><i class="fas fa-award"></i> <%= chances %>% de ganar</span>
 	</div>
 </div>
 
 <% if(winners.length > 0) { %>
 	<div class="row">
 		<% winners.forEach(function(item){ %>
-			<div class="col s4 m2">
-				<div class="card person center-align">
-					<a href="#!" class="grey-text text-darken-2" onclick="apretaste.send({command:'CHAT', data:{'userId':'@<%= item.username %>'}})">
-						<div class="person-avatar circle" face="<%= item.avatar %>" color="<%= item.avatarColor %>" size="40" online="<%= item.online %>"></div>
-
-						<div class="data <%= item.gender %>">
-							<div>@<%= item.username %></div>
-							<small><%= item.end_date %></small>
-						</div>
-					</a>
+			<div class="col s4 m3" onclick="apretaste.send({command:'PERFIL', data:{'username':'<%= item.username %>'}})">
+				<div class="card user-card center-align">
+					<div class="content">
+						<div class="person-avatar circle" face="<%= item.avatar %>" color="<%= item.avatarColor %>" size="40" online="1"></div>
+						<span class="<%= item.gender %>">@<%= short(item.username) %></span>
+					</div>
+					<div class="action grey lighten-2">
+						<span class="chip medium clear"><%= moment(item.end_date).format('MMMM') %></span>
+					</div>
 				</div>
 			</div>
 		<% }) %>

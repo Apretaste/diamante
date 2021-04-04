@@ -1,6 +1,7 @@
 {
 	"name": "diamante",
 	"caption": "Diamante",
+	"icon": "fas fa-gem",
 	"description": "Lista beneficios especiales para usuarios con nivel Diamante",
 	"category": "otros",
 	"creator": "salvi@apretaste.org",
